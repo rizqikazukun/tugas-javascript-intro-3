@@ -81,21 +81,26 @@ const NoteApp = {
     notesData: [],
     addNotes: function (param) {
         return new Promise((resolve,reject)=>{
+
+            if (!param) {
+                reject(new Error(`E4000 : Can't add an empty title and content Note`))
+            }
+
             let { title, content } = param
             const timeStamp = new Date()
             const id = !this.notesData ? 1:this.notesData.length+1
             const note = {id, title, content, timeStamp}
 
             if (!title && !content) {
-                reject(new Error(`Can't add an empty title and content Note`))
+                reject(new Error(`E4000 : Can't add an empty title and content Note`))
             } else if (!title) {
                 title = content.substr(0, 20)
                 this.notesData.push({...note, title})
-                resolve(`Note Added with error E2400`)
+                resolve(`Note Added with error E2401`)
             } else if (!content) {
                 content = ''
                 this.notesData.push({...note, content})
-                resolve(`Note Added with error E2500`)
+                resolve(`Note Added with error E2402`)
             } else {
                 this.notesData.push(note)
                 resolve(`Note Added`)
@@ -105,7 +110,7 @@ const NoteApp = {
     readNotes: function () {
         return new Promise((resolve,reject)=>{
             if (this.notesData.length == 0){
-                reject(new Error('Notes Not Found E4400'))
+                reject(new Error('E4400 : Notes Not Found'))
             } else {
                 resolve(this.notesData)
             }
@@ -123,6 +128,7 @@ const runApp = async () => {
 
     const myNote = NoteApp
     await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
+    await myNote.addNotes().then(msg => console.log(msg)).catch(err => console.log(err.message))
     await myNote.addNotes({title: 'Todo Hari Ini'}).then(msg => console.log(msg)).catch(err => console.log(err.message))
     await myNote.addNotes({content: 'Todo besok mancing di empang pak basuki'}).then(msg => console.log(msg)).catch(err => console.log(err.message))
     await myNote.addNotes({title: 'Todo Minggu Ini', content: 'Belum Ada'}).then(msg => console.log(msg)).catch(err => console.log(err.message))
