@@ -83,16 +83,16 @@ const NoteApp = {
         return new Promise((resolve,reject)=>{
 
             if (!param) {
-                reject(new Error(`E4000 : Can't add an empty title and content Note`))
+                reject(new Error(`E4001 : No param sent`))
             }
 
             let { title, content } = param
-            const timeStamp = new Date()
+            const createdAt = new Date()
             const id = !this.notesData ? 1:this.notesData.length+1
-            const note = {id, title, content, timeStamp}
+            const note = {id, title, content, createdAt, updateAt: null}
 
             if (!title && !content) {
-                reject(new Error(`E4000 : Can't add an empty title and content Note`))
+                reject(new Error(`E4003 : Can't add an empty title and content Note`))
             } else if (!title) {
                 title = content.substr(0, 20)
                 this.notesData.push({...note, title})
@@ -115,6 +115,72 @@ const NoteApp = {
                 resolve(this.notesData)
             }
         })
+    },
+    updateNotes: function (param) {
+        return new Promise((resolve,reject)=>{
+
+            if (!param) {
+                reject(new Error(`E4001 : No param sent`))
+            }
+
+            let { id, title, content } = param
+            const updateAt = new Date()
+
+            const noteIndex = this.notesData.findIndex(item => {
+                const isHasProperty = Object.getOwnPropertyDescriptors(item)
+                return isHasProperty.id.value === id
+              })
+
+            // Known Bug : if this if valued as true, the error is able to catch but the program is not stop
+            //             and keep the prosses.
+            //             console.log(noteIndex == -1)
+            if (noteIndex == -1) {
+                reject(new Error('E4403 : Forbihiden, it\'s like someone has remove the note'))
+            }
+
+            const note = this.notesData[noteIndex]
+
+            if (!id) {
+                reject(new Error('E4002 : No id sent'))
+            } else if (!title && !content) {
+                reject(new Error(`E4003 : Can't add an empty title and content Note`))
+            } else if (!title) {
+                title = content.substr(0, 20)
+                this.notesData.splice(noteIndex, 1, {...note, title, updateAt})
+                resolve(`Note Updated with error E2401`)
+            } else if (!content) {
+                content = ''
+                this.notesData.splice(noteIndex, 1, {...note, content, updateAt})
+                resolve(`Note Updated with error E2402`)
+            } else {
+                this.notesData.splice(noteIndex, 1, {...note, title, content, updateAt})
+                resolve(`Note Updated`)
+            }
+
+        })
+    },
+    deleteNotes: function (param) {
+        return new Promise((resolve,reject)=>{
+
+            if (!param) {
+                reject(new Error(`E4001 : No param sent`))
+            }
+
+            let { id } = param
+
+            const noteIndex = this.notesData.findIndex(item => {
+                const isHasProperty = Object.getOwnPropertyDescriptors(item)
+                return isHasProperty.id.value === id
+              })
+
+            if (noteIndex != -1) {
+                this.notesData.splice( noteIndex, 1 )
+                resolve(`Item deleted id:${id} index:${noteIndex}`)
+            } else {
+                reject(new Error('E4400 : Notes Not Found'))
+            }
+
+        })
     }
 }
 
@@ -133,6 +199,12 @@ const runApp = async () => {
     await myNote.addNotes({content: 'Todo besok mancing di empang pak basuki'}).then(msg => console.log(msg)).catch(err => console.log(err.message))
     await myNote.addNotes({title: 'Todo Minggu Ini', content: 'Belum Ada'}).then(msg => console.log(msg)).catch(err => console.log(err.message))
     await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
+    await myNote.updateNotes().then(msg => console.table(msg)).catch(err => console.log(err.message)) 
+    await myNote.deleteNotes({id: 4}).then(msg => console.table(msg)).catch(err => console.log(err.message))
+    await myNote.deleteNotes({id: 1}).then(msg => console.table(msg)).catch(err => console.log(err.message))
+    await myNote.updateNotes({id: 1, title: 'Todo Hari Ini', content: 'Nanti siang beli stock kopi di alfa' }).then(msg => console.table(msg)).catch(err => console.log(err.message))
+    await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
+    
 }
 runApp()
 
