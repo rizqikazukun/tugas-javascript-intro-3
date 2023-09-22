@@ -34,9 +34,9 @@ const getMonth = (callback) => {
     },1000)
 }
 
-getMonth(( cb, data )=>{
-    if (cb) {
-        console.log(cb.message)
+getMonth(( error, data )=>{
+    if (error) {
+        console.log(error.message)
     } else {
         data.map(data => console.log(data))
     }
