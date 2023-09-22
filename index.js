@@ -29,16 +29,16 @@ const getMonth = (callback) => {
         if (!error) {
             callback(null, month)
         } else {
-            callback(new Error('Sorry Data Not Found'))
+            callback(new Error('Sorry Data Not Found'), [])
         }
     },1000)
 }
 
 getMonth(( cb, data )=>{
-    if (data) {
-        data.map(data => console.log(data))
-    } else {
+    if (cb) {
         console.log(cb.message)
+    } else {
+        data.map(data => console.log(data))
     }
 })
 
