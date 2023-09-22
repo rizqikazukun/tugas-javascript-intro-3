@@ -132,6 +132,7 @@ const NoteApp = {
       //             console.log(noteIndex == -1)
       if (noteIndex === -1) {
         reject(new Error('E4403 : Forbihiden, it\'s like someone has remove the note'))
+        return
       }
 
       const note = this.notesData[noteIndex]
@@ -198,8 +199,8 @@ const runApp = async () => {
   await myNote.deleteNotes({ id: 2 }).then(msg => console.table(msg)).catch(err => console.log(err.message))
   await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
   // This action will invoking the bug
-  await myNote.updateNotes({ id: 2, content: 'Belum ada rencana' }).then(msg => console.table(msg)).catch(err => console.log(err.message))
-  await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
+  // await myNote.updateNotes({ id: 2, content: 'Belum ada rencana' }).then(msg => console.table(msg)).catch(err => console.log(err.message))
+  // await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
 }
 runApp()
 
