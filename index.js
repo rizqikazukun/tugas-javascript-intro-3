@@ -140,14 +140,14 @@ const NoteApp = {
         reject(new Error('E4002 : No id sent'))
       } else if (!title && !content) {
         reject(new Error('E4003 : Can\'t add an empty title and content Note'))
-      } else if (!title) {
-        title = content.substr(0, 20)
-        this.notesData.splice(noteIndex, 1, { ...note, title, updateAt })
-        resolve('Note Updated with error E2401')
       } else if (!content) {
         content = ''
         this.notesData.splice(noteIndex, 1, { ...note, content, updateAt })
         resolve('Note Updated with error E2402')
+      } else if (!title) {
+        title = content.substr(0, 20)
+        this.notesData.splice(noteIndex, 1, { ...note, title, updateAt })
+        resolve('Note Updated with error E2401')
       } else {
         this.notesData.splice(noteIndex, 1, { ...note, title, content, updateAt })
         resolve('Note Updated')
@@ -190,11 +190,15 @@ const runApp = async () => {
   await myNote.addNotes({ title: 'Todo Hari Ini' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
   await myNote.addNotes({ content: 'Todo besok mancing di empang pak basuki' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
   await myNote.addNotes({ title: 'Todo Minggu Ini', content: 'Belum Ada' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
+  await myNote.addNotes({ title: 'Todo Bulan Ini', content: 'Ikut Pelatihan PijarCamp' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
+  await myNote.addNotes({ title: 'Todo Tahun Ini', content: 'banyak' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
   await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
   await myNote.updateNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
-  await myNote.deleteNotes({ id: 4 }).then(msg => console.table(msg)).catch(err => console.log(err.message))
-  await myNote.deleteNotes({ id: 1 }).then(msg => console.table(msg)).catch(err => console.log(err.message))
   await myNote.updateNotes({ id: 1, title: 'Todo Hari Ini', content: 'Nanti siang beli stock kopi di alfa' }).then(msg => console.table(msg)).catch(err => console.log(err.message))
+  await myNote.deleteNotes({ id: 2 }).then(msg => console.table(msg)).catch(err => console.log(err.message))
+  await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
+  // This action will invoking the bug
+  await myNote.updateNotes({ id: 2, content: 'Belum ada rencana' }).then(msg => console.table(msg)).catch(err => console.log(err.message))
   await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
 }
 runApp()
