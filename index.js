@@ -16,8 +16,22 @@ const cekHariKerja = (day) => {
   })
 }
 
+// Used when working with a few promise
 const isWorkingDay = cekHariKerja('sabtu')
 isWorkingDay.then(result => console.log(result)).catch(error => console.log(error.message))
+
+// Used when working with a much promise
+const workingDayChecker = async () => {
+  try {
+    const day = 'minggu'
+    const check =  await cekHariKerja(day)
+    console.log(check)
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+workingDayChecker()
 
 // answer 2
 
@@ -52,7 +66,7 @@ const Ticketing = {
       if (!(money < minToup)) {
         this.currentBalance += minToup
         resolve(
-                    `Current balance is Rp.${this.currentBalance}`
+          `Current balance is Rp.${this.currentBalance}`
         )
       } else {
         reject(
