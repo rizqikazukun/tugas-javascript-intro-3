@@ -98,7 +98,11 @@ const NoteApp = {
       }
 
       let { title, content } = param
-      const createdAt = new Date()
+
+      // Time stamp is just simulation for UTC +7 - 1day
+      const currentTime = new Date().getTime()
+      const createdAt = new Date(currentTime - 17 * 60 * 60 * 1000)
+
       const id = !this.notesData ? 1 : this.notesData.length + 1
       const note = { id, title, content, createdAt, updateAt: null }
 
@@ -134,7 +138,10 @@ const NoteApp = {
       }
 
       let { id, title, content } = param
-      const updateAt = new Date()
+
+      // Time stamp is just simulation for UTC +7 - 1day
+      const currentTime = new Date().getTime()
+      const updateAt = new Date(currentTime - 15 * 60 * 60 * 1000)
 
       const noteIndex = this.notesData.findIndex(item => {
         return item.id === id
@@ -143,6 +150,7 @@ const NoteApp = {
       // Known Bug : if this if valued as true, the error is able to catch but the program is not stop
       //             and keep the prosses.
       //             console.log(noteIndex == -1)
+      // Bug is solved 2023/09/22
       if (noteIndex === -1) {
         reject(new Error('E4403 : Forbihiden, it\'s like someone has remove the note'))
         return
@@ -191,6 +199,8 @@ const NoteApp = {
 }
 
 const runApp = async () => {
+  // This function just for simulating user action.
+
   const busTicket = Ticketing
   await busTicket.useTicket().then(msg => console.log(msg)).catch(err => console.log(err.message))
   await busTicket.topup(7500).then(msg => console.log(msg)).catch(err => console.log(err.message))
@@ -210,7 +220,7 @@ const runApp = async () => {
   await myNote.updateNotes({ id: 1, title: 'Todo Hari Ini', content: 'Nanti siang beli stock kopi di alfa' }).then(msg => console.table(msg)).catch(err => console.log(err.message))
   await myNote.deleteNotes({ id: 2 }).then(msg => console.table(msg)).catch(err => console.log(err.message))
   await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
-  // This action will invoking the bug
+  // This action will invoking the bug (the bug is solved, action bellow will not invoke the bug)
   // await myNote.updateNotes({ id: 2, content: 'Belum ada rencana' }).then(msg => console.table(msg)).catch(err => console.log(err.message))
   // await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
 }
