@@ -70,7 +70,7 @@ const Ticketing = {
         )
       } else {
         reject(
-          new Error(`Sorry Payment is reject, Minimum TopUp is ${minToup}`)
+          new Error(`Sorry Payment is reject, Minimum TopUp is Rp.${minToup}`)
         )
       }
     })
@@ -99,7 +99,7 @@ const NoteApp = {
 
       let { title, content } = param
 
-      // Time stamp is just simulation for UTC +7 - 1day
+      // Timestamp is just simulation for UTC +7 - 1day
       const currentTime = new Date().getTime()
       const createdAt = new Date(currentTime - 17 * 60 * 60 * 1000)
 
@@ -107,7 +107,7 @@ const NoteApp = {
       const note = { id, title, content, createdAt, updateAt: null }
 
       if (!title && !content) {
-        reject(new Error('E4003 : Can\'t add an empty title and content Note'))
+        reject(new Error('E4003 : Can\'t add an empty title and content note'))
       } else if (!title) {
         title = content.substr(0, 20)
         this.notesData.push({ ...note, title })
