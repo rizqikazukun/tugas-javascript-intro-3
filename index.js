@@ -24,7 +24,7 @@ isWorkingDay.then(result => console.log(result)).catch(error => console.log(erro
 const workingDayChecker = async () => {
   try {
     const day = 'minggu'
-    const check =  await cekHariKerja(day)
+    const check = await cekHariKerja(day)
     console.log(check)
   } catch (error) {
     console.log(error.message)
@@ -137,8 +137,7 @@ const NoteApp = {
       const updateAt = new Date()
 
       const noteIndex = this.notesData.findIndex(item => {
-        const isHasProperty = Object.getOwnPropertyDescriptors(item)
-        return isHasProperty.id.value === id
+        return item.id === id
       })
 
       // Known Bug : if this if valued as true, the error is able to catch but the program is not stop
@@ -178,8 +177,7 @@ const NoteApp = {
       const { id } = param
 
       const noteIndex = this.notesData.findIndex(item => {
-        const isHasProperty = Object.getOwnPropertyDescriptors(item)
-        return isHasProperty.id.value === id
+        return item.id === id
       })
 
       if (noteIndex !== -1) {
