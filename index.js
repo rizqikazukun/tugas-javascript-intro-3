@@ -70,7 +70,7 @@ const Ticketing = {
         )
       } else {
         reject(
-          new Error(`Sorry Payment is reject, Minimum TopUp is Rp.${minToup}`)
+          new Error(`Sorry Payment is rejected, Minimum TopUp is Rp.${minToup}`)
         )
       }
     })
@@ -93,7 +93,14 @@ const Ticketing = {
       if (!(this.currentBalance < entryPrice)) {
         this.currentBalance -= entryPrice
         const theTime = currentTime <= 12 ? currentTime + ' AM' : currentTime - 12 + ' PM'
-        resolve(`The time is ${theTime}. Ticket price is Rp.${entryPrice}. \nYour current balance is Rp.${this.currentBalance}. Thankyou Enjoy The trip.`)
+        const message = [
+          `The time is ${theTime}. `,
+          `Ticket price is Rp.${entryPrice}. `,
+          'Thankyou for using our service, ',
+          `Your current balance is Rp.${this.currentBalance}. `,
+          'Enjoy The trip.'
+        ]
+        resolve(message[0] + message[1] + message[2] + message[3] + message[4])
       } else {
         reject(new Error(`Sorry balance is not enough, Please topup first, Your current balance is Rp.${this.currentBalance}`))
       }
@@ -230,12 +237,12 @@ const runApp = async () => {
   await myNote.addNotes({ title: 'Todo Bulan Ini', content: 'Ikut Pelatihan PijarCamp' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
   await myNote.addNotes({ title: 'Todo Tahun Ini', content: 'banyak' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
   await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
-  await myNote.updateNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
-  await myNote.updateNotes({ id: 1, title: 'Todo Hari Ini', content: 'Nanti siang beli stock kopi di alfa' }).then(msg => console.table(msg)).catch(err => console.log(err.message))
-  await myNote.deleteNotes({ id: 2 }).then(msg => console.table(msg)).catch(err => console.log(err.message))
+  await myNote.updateNotes().then(msg => console.log(msg)).catch(err => console.log(err.message))
+  await myNote.updateNotes({ id: 1, title: 'Todo Hari Ini', content: 'Nanti siang beli stock kopi di alfa' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
+  await myNote.deleteNotes({ id: 2 }).then(msg => console.log(msg)).catch(err => console.log(err.message))
   await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
   // This action will invoking the bug (the bug is solved, action bellow will not invoke the bug)
-  // await myNote.updateNotes({ id: 2, content: 'Belum ada rencana' }).then(msg => console.table(msg)).catch(err => console.log(err.message))
+  // await myNote.updateNotes({ id: 2, content: 'Belum ada rencana' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
   // await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
 }
 runApp()
