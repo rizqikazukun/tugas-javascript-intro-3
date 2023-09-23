@@ -211,7 +211,7 @@ const runApp = async () => {
   await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
   await myNote.addNotes().then(msg => console.log(msg)).catch(err => console.log(err.message))
   await myNote.addNotes({ title: 'Todo Hari Ini' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await myNote.addNotes({ content: 'Todo besok mancing di empang pak basuki' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
+  await myNote.addNotes({ content: 'Todo besok mancing di empang pak rahman' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
   await myNote.addNotes({ title: 'Todo Minggu Ini', content: 'Belum Ada' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
   await myNote.addNotes({ title: 'Todo Bulan Ini', content: 'Ikut Pelatihan PijarCamp' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
   await myNote.addNotes({ title: 'Todo Tahun Ini', content: 'banyak' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
@@ -239,7 +239,7 @@ const getNames = async () => {
       return names.push({ name })
     })
 
-    console.log(names)
+    console.table(names)
   } catch (error) {
     console.log(error.message)
   }
