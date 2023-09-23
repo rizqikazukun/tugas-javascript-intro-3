@@ -124,14 +124,14 @@ const NoteApp = {
       } else if (!title) {
         title = content.substr(0, 20)
         this.notesData.push({ ...note, title })
-        resolve('Note Added with error E2401')
+        resolve(`Note Added, id:${id}, with error E2401`)
       } else if (!content) {
         content = ''
         this.notesData.push({ ...note, content })
-        resolve('Note Added with error E2402')
+        resolve(`Note Added, id:${id}, with error E2402`)
       } else {
         this.notesData.push(note)
-        resolve('Note Added')
+        resolve(`Note Added, id:${id}`)
       }
     })
   },
@@ -178,14 +178,14 @@ const NoteApp = {
       } else if (!content) {
         content = ''
         this.notesData.splice(noteIndex, 1, { ...note, content, updateAt })
-        resolve('Note Updated with error E2402')
+        resolve(`Note Updated, id:${id}, with error E2402`)
       } else if (!title) {
         title = content.substr(0, 20)
         this.notesData.splice(noteIndex, 1, { ...note, title, updateAt })
-        resolve('Note Updated with error E2401')
+        resolve(`Note Updated, id:${id}, with error E2401`)
       } else {
         this.notesData.splice(noteIndex, 1, { ...note, title, content, updateAt })
-        resolve('Note Updated')
+        resolve(`Note Updated, id:${id}`)
       }
     })
   },
@@ -203,7 +203,7 @@ const NoteApp = {
 
       if (noteIndex !== -1) {
         this.notesData.splice(noteIndex, 1)
-        resolve(`Item deleted id:${id} index:${noteIndex}`)
+        resolve(`Note Deleted, id:${id}, index:${noteIndex}`)
       } else {
         reject(new Error('E4400 : Note not found'))
       }
@@ -219,6 +219,7 @@ const runApp = async () => {
   await busTicket.topup(7500).then(msg => console.log(msg)).catch(err => console.log(err.message))
   await busTicket.topup(10000).then(msg => console.log(msg)).catch(err => console.log(err.message))
   await busTicket.useTicket().then(msg => console.log(msg)).catch(err => console.log(err.message))
+  await console.log('')
 
   const myNote = NoteApp
   await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
