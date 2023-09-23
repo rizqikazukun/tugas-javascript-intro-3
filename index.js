@@ -77,10 +77,23 @@ const Ticketing = {
   },
   useTicket: function () {
     return new Promise((resolve, reject) => {
-      const entryPrice = 3500
+      // Adjust the time to simulating to 6 AM
+      // const currentTime = new Date('September 22, 2023 06:59:59').getHours().toFixed()
+
+      const currentTime = new Date().getHours().toFixed()
+
+      let entryPrice
+      // it just able from 5AM to 6.59 AM
+      if (currentTime >= 5 && currentTime < 7) {
+        entryPrice = 2000
+      } else {
+        entryPrice = 3500
+      }
+
       if (!(this.currentBalance < entryPrice)) {
         this.currentBalance -= entryPrice
-        resolve(`The ticket price is ${entryPrice}. Your current balance is Rp.${this.currentBalance}. Thankyou Enjoy The trip.`)
+        const theTime = currentTime <= 12 ? currentTime + ' AM' : currentTime - 12 + ' PM'
+        resolve(`The time is ${theTime}. Ticket price is Rp.${entryPrice}. \nYour current balance is Rp.${this.currentBalance}. Thankyou Enjoy The trip.`)
       } else {
         reject(new Error(`Sorry balance is not enough, Please topup first, Your current balance is Rp.${this.currentBalance}`))
       }
@@ -125,7 +138,7 @@ const NoteApp = {
   readNotes: function () {
     return new Promise((resolve, reject) => {
       if (this.notesData.length === 0) {
-        reject(new Error('E4400 : Notes Not Found'))
+        reject(new Error('E4400 : Note not found'))
       } else {
         resolve(this.notesData)
       }
@@ -192,7 +205,7 @@ const NoteApp = {
         this.notesData.splice(noteIndex, 1)
         resolve(`Item deleted id:${id} index:${noteIndex}`)
       } else {
-        reject(new Error('E4400 : Notes Not Found'))
+        reject(new Error('E4400 : Note not found'))
       }
     })
   }
