@@ -218,34 +218,37 @@ const NoteApp = {
   }
 }
 
-const runApp = async () => {
-  // This function just for simulating user action.
-
-  const busTicket = Ticketing
-  await busTicket.useTicket().then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await busTicket.topup(7500).then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await busTicket.topup(10000).then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await busTicket.useTicket().then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await console.log('')
-
-  const myNote = NoteApp
-  await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
-  await myNote.addNotes().then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await myNote.addNotes({ title: 'Todo Hari Ini' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await myNote.addNotes({ content: 'Todo besok mancing di empang pak rahman' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await myNote.addNotes({ title: 'Todo Minggu Ini', content: 'Belum Ada' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await myNote.addNotes({ title: 'Todo Bulan Ini', content: 'Ikut Pelatihan PijarCamp' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await myNote.addNotes({ title: 'Todo Tahun Ini', content: 'banyak' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
-  await myNote.updateNotes().then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await myNote.updateNotes({ id: 1, title: 'Todo Hari Ini', content: 'Nanti siang beli stock kopi di alfa' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await myNote.deleteNotes({ id: 2 }).then(msg => console.log(msg)).catch(err => console.log(err.message))
-  await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
-  // This action will invoking the bug (the bug is solved, action bellow will not invoke the bug)
-  // await myNote.updateNotes({ id: 2, content: 'Belum ada rencana' }).then(msg => console.log(msg)).catch(err => console.log(err.message))
-  // await myNote.readNotes().then(msg => console.table(msg)).catch(err => console.log(err.message))
+const runTicketingApp = async () => {
+  try {
+    const busTicket = Ticketing
+    await busTicket.topup(10000)
+    const useTicket = await busTicket.useTicket()
+    console.log(useTicket)
+  } catch (error) {
+    console.log(error.message)
+  }
 }
-runApp()
+
+runTicketingApp()
+
+const runNoteApp = async () => {
+  try {
+    const myNote = NoteApp
+    await myNote.addNotes({ title: 'Todo Hari Ini' })
+    await myNote.addNotes({ content: 'Todo besok mancing di empang pak rahman' })
+    await myNote.addNotes({ title: 'Todo Minggu Ini', content: 'Belum Ada' })
+    await myNote.addNotes({ title: 'Todo Bulan Ini', content: 'Ikut Pelatihan PijarCamp' })
+    await myNote.addNotes({ title: 'Todo Tahun Ini', content: 'banyak' })
+    await myNote.updateNotes({ id: 1, title: 'Todo Hari Ini', content: 'Nanti siang beli stock kopi di alfa' })
+    await myNote.deleteNotes({ id: 2 })
+    await myNote.readNotes()
+    console.table(myNote.notesData)
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+runNoteApp()
 
 // answer 4
 
