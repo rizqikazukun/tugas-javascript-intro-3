@@ -1,5 +1,7 @@
 # tugas-javascript-intro-3
 
+This is a repo contain js intro 3  
+
 ## known Bug
 
 ## Recent Bug
